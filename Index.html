@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Patient Details Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: #fff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      width: 350px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      color: #555;
+    }
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    textarea {
+      resize: vertical;
+      height: 80px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+  <script>
+    function fetchPatientDetails() {
+      var mrNo = document.getElementById("mr_no").value;
+      if (mrNo.trim() === "") {
+        alert("Please enter MR No");
+        return;
+      }
+      fetch("https://script.google.com/macros/s/AKfycbxqENsW1rBBDd2hs2Oz-GePl48-5-LG8hB1uS3E46F5k-cENyWzWeb5CmdIveGMn1k2/exec?mr_no=" + mrNo)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            document.getElementById("patient_name").value = data.patient_name;
+            document.getElementById("procedure").value = data.procedure;
+            document.getElementById("eye").value = data.eye;
+            document.getElementById("insurance").value = data.insurance;
+            document.getElementById("doctor").value = data.doctor;
+            document.getElementById("send_by").value = data.send_by;
+            document.getElementById("status").value = data.status;
+          } else {
+            alert("Patient not found!");
+          }
+        })
+        .catch(error => console.log("Error:", error));
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h2>Patient Details</h2>
+    <label for="mr_no">MR No:</label>
+    <input type="text" id="mr_no" placeholder="Enter MR No">
+    <button type="button" onclick="fetchPatientDetails()">Fetch Details</button>
+    
+    <label for="patient_name">Patient Name:</label>
+    <input type="text" id="patient_name" readonly>
+    
+    <label for="procedure">Procedure:</label>
+    <input type="text" id="procedure" readonly>
+    
+    <label for="eye">Eye:</label>
+    <input type="text" id="eye" readonly>
+    
+    <label for="insurance">Insurance:</label>
+    <input type="text" id="insurance" readonly>
+    
+    <label for="doctor">Doctor:</label>
+    <input type="text" id="doctor" readonly>
+    
+    <label for="send_by">Send By:</label>
+    <input type="text" id="send_by" readonly>
+    
+    <label for="status">Status:</label>
+    <textarea id="status" readonly></textarea>
+  </div>
+</body>
+</html>
